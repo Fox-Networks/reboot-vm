@@ -49,6 +49,8 @@ Para resumir, é possível acessar o Mikrotik via SSH sem senha a partir de um c
    sudo systemctl restart apache2
    ```
 
+**Captura de tela**: Adicione uma captura de tela mostrando o comando `phpinfo()` exibindo a extensão `ssh2` ativa.
+
 ## 2ª Etapa: Criação do Script PHP 📜
 
 1. Navegue até a pasta:
@@ -67,7 +69,23 @@ Para resumir, é possível acessar o Mikrotik via SSH sem senha a partir de um c
    ?>
    ```
 
+3. Crie uma pasta chamada `server`:
+   ```bash
+   mkdir server
+   cd server
+   ```
+
+4. Copie o `index.php` deste repositório e cole-o na pasta `server`:
+   ```bash
+   nano index.php
+   ```
+   Cole o código do `index.php`.
+
+**Captura de tela**: Adicione uma captura de tela mostrando a estrutura de diretórios e o conteúdo do arquivo `index.php`.
+
 ## 3ª Etapa: Verificação ✅
 
 1. Acesse `http://ipdavm/php.php`.
 2. Se tudo ocorrer bem, a página abrirá. Procure por `ssh2`. Se estiver na página, significa que tudo foi instalado corretamente.
+
+**Captura de tela**: Adicione uma captura de tela da página aberta no navegador mostrando a saída do `phpinfo()` com a extensão `ssh2` listada.
