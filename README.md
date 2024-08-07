@@ -49,6 +49,7 @@ Para resumir, é possível acessar o Mikrotik via SSH sem senha a partir de um c
    sudo systemctl restart apache2
    ```
 
+
 ## 2ª Etapa: Criação do Script PHP 📜
 
 1. Navegue até a pasta:
@@ -79,7 +80,71 @@ Para resumir, é possível acessar o Mikrotik via SSH sem senha a partir de um c
    ```
    Cole o código do `index.php`.
 
+
 ## 3ª Etapa: Verificação ✅
 
 1. Acesse `http://ipdavm/php.php`.
 2. Se tudo ocorrer bem, a página abrirá. Procure por `ssh2`. Se estiver na página, significa que tudo foi instalado corretamente.
+
+
+---
+
+## Configuração do Mikrotik
+
+### Informações Necessárias 🖥️
+
+- IP do Servidor Proxmox
+- Porta do SSH
+- Usuário
+- Senha
+- ID da VM
+
+### 1ª Etapa: Configuração do Script no Mikrotik
+
+1. Acesse o Mikrotik e crie um script com o nome `reboot-vm`:
+   ```bash
+   /tool fetch url="http://IPHOST/server/?host=IPPROXMOX&port=PORTA&user=USUARIO&password=SENHA&commands=COMANDOS"
+   ```
+
+2. Substitua os seguintes valores:
+   - `IPHOST`: IP onde está o script PHP que acessa o Proxmox
+   - `PORTA`: Porta do SSH (se for padrão, apague a linha `&port=PORTA`)
+   - `USUARIO`: Usuário do Proxmox
+   - `SENHA`: Senha do Proxmox
+   - `COMANDOS`: Comandos a serem executados
+
+3. Para comandos múltiplos, separe-os por `<br>`. Para espaços nos comandos, use `%20`.
+
+**Exemplos**:
+
+- Comando de parada (`qm stop 116`):
+  ```bash
+  qm%20stop%20116
+  ```
+
+- Comandos de parada e início (`qm stop 116` e `qm start 116`):
+  ```bash
+  qm%20stop%20116<br>qm%20start%20116
+  ```
+
+### 2ª Etapa: Configuração do Netwatch
+
+1. No Mikrotik, configure o Netwatch:
+   - **Host**: IP da VM que trava
+   - **Interval**: Deixe padrão
+   - **Timeout**: Padrão
+
+2. Na aba **UP**, crie um log para saber quando a VM está UP:
+   ```bash
+   log warning message=VM-UP
+   ```
+
+3. Na aba **Down**, crie um log de down e o comando para executar o script:
+   ```bash
+   /log error message=VM-DOWN
+   /sys script run reboot-vm
+   ```
+
+---
+
+Espero ter ajudado, pois isso funcionou muito bem aqui. Além de reiniciar VMs, você pode fazer infinitas coisas junto com o Mikrotik. 😊
